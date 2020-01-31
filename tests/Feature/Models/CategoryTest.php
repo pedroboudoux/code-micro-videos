@@ -13,7 +13,7 @@ class CategoryTest extends TestCase
 
     public function testList()
     {
-        factory(Category::class, 1)->create();
+        factory(Category::class)->create();
         $categories = Category::all();
 
         $categoryKeys = array_keys($categories->first()->getAttributes());
@@ -64,7 +64,7 @@ class CategoryTest extends TestCase
     public function testUpdate()
     {
         /** @var Category $category */
-        $category = factory(Category::class)->create(['description' => 'test_description'])->first();
+        $category = factory(Category::class)->create(['description' => 'test_description']);
         $data = ['name' => 'test_name_updated', 'description' => 'test_description_updated', 'is_active' => true];
         $category->update($data);
 
@@ -76,7 +76,7 @@ class CategoryTest extends TestCase
     public function testDelete()
     {
         /** @var Category $category */
-        $category = factory(Category::class, 1)->create()->first();
+        $category = factory(Category::class)->create();
         $category->delete();
 
         $this->assertEquals(0, Category::count());
@@ -85,7 +85,7 @@ class CategoryTest extends TestCase
     public function testValidUuid()
     {
         /** @var Category $category */
-        $category = factory(Category::class)->create()->first();
+        $category = factory(Category::class)->create();
         $this->assertTrue(is_string($category->id));
         $this->assertTrue(
             preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $category->id) === 1

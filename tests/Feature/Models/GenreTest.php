@@ -13,7 +13,7 @@ class GenreTest extends TestCase
 
     public function testList()
     {
-        factory(Genre::class, 1)->create();
+        factory(Genre::class)->create();
         $genres = Genre::all();
 
         $genreKeys = array_keys($genres->first()->getAttributes());
@@ -50,7 +50,7 @@ class GenreTest extends TestCase
     public function testUpdate()
     {
         /** @var Genre $genre */
-        $genre = factory(Genre::class)->create()->first();
+        $genre = factory(Genre::class)->create();
         $data = ['name' => 'test_name_updated', 'is_active' => true];
         $genre->update($data);
 
@@ -62,7 +62,7 @@ class GenreTest extends TestCase
     public function testDelete()
     {
         /** @var Genre $genre */
-        $genre = factory(Genre::class, 1)->create()->first();
+        $genre = factory(Genre::class)->create();
         $genre->delete();
 
         $this->assertEquals(0, Genre::count());
@@ -71,7 +71,7 @@ class GenreTest extends TestCase
     public function testValidUuid()
     {
         /** @var Genre $genre */
-        $genre = factory(Genre::class)->create()->first();
+        $genre = factory(Genre::class)->create();
         $this->assertTrue(is_string($genre->id));
         $this->assertTrue(
             preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $genre->id) === 1
