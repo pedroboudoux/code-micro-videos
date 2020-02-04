@@ -5,5 +5,5 @@ steps:
     args: ['-f', 'docker-compose.cbuild.yaml', 'up', '-d']
 
   - id: 'Rodando docker ps'
-      name: 'gcr.io/cloud-builders/docker'
-      args: ['ps']
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['ps']
