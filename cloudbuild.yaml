@@ -10,11 +10,11 @@ steps:
 
   - id: 'Copiando o .env'
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.example', '.env']
+    args: ['exec', '-t', 'micro-videos-app', 'cp', '.docker/app/.env', '.env']
 
   - id: 'Copiando o .env.testing'
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'micro-videos-app', 'cp', '/var/www/.docker/app/.env.testing', '.env.testing']
+    args: ['exec', '-t', 'micro-videos-app', 'cp', '.docker/app/.env.testing', '.env.testing']
 
   - id: 'Gerando o key do laravel'
     name: 'gcr.io/cloud-builders/docker'
