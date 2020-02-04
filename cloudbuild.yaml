@@ -4,10 +4,6 @@ steps:
     name: 'gcr.io/$PROJECT_ID/docker-compose:1.24.0'
     args: ['-f', 'docker-compose.cbuild.yaml', 'up', '-d']
 
-  - id: 'Rodando o composer'
-    name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'micro-videos-app', 'composer', 'install']
-
   - id: 'Copiando o .env'
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.example.docker', '.env']
@@ -15,6 +11,10 @@ steps:
   - id: 'Copiando o .env.testing'
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.testing.example.docker', '.env.testing']
+
+  - id: 'Rodando o php composer'
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec', '-t', 'micro-videos-app', 'composer', 'install']
 
   - id: 'Gerando o key do laravel'
     name: 'gcr.io/cloud-builders/docker'
