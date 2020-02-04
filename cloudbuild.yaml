@@ -6,11 +6,11 @@ steps:
 
   - id: 'Copiando o .env'
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.example.docker', '.env']
+    args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.example', '.env']
 
   - id: 'Copiando o .env.testing'
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.testing.example.docker', '.env.testing']
+    args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.testing.example', '.env.testing']
 
   - id: 'Rodando o php composer'
     name: 'gcr.io/cloud-builders/docker'
