@@ -16,7 +16,11 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'micro-videos-app', 'composer', 'install']
 
-  - id: 'Gerando o key do laravel'
+  - id: 'Gerando o key do .env'
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec', '-t', 'micro-videos-app', 'php', '/var/www/artisan', 'key:generate']
+
+  - id: 'Gerando o key do .env.testing'
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'micro-videos-app', 'php', '/var/www/artisan', 'key:generate']
 
