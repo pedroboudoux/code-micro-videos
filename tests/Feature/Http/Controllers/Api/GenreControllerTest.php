@@ -146,6 +146,20 @@ class GenreControllerTest extends TestCase
                 'name' => 'test',
             ]
         );
-
     }
+
+    public function testDestroy()
+    {
+        /** @var Genre $genre */
+        $genre = factory(Genre::class)->create();
+
+        $response = $this->json('DELETE', route('api.genres.destroy', ['genre' => $genre->id]));
+        $response->assertStatus(204);
+
+        $response = $this->get(route('api.genres.show', ['genre' => $genre->id]));
+        $response->assertStatus(404);
+
+        $this->assertNotNull(Genre::withTrashed()->find($genre->id));
+    }
+
 }
