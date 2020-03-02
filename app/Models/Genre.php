@@ -14,10 +14,17 @@ class Genre extends Model
         'name',
         'is_active',
     ];
+
     protected $dates = ['deleted_at'];
+
     protected $casts = [
         'id' => 'string',
         'is_active' => 'boolean',
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 
 }

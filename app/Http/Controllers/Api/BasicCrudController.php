@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 
 abstract class BasicCrudController extends Controller
 {
-    protected abstract function model();
+    abstract protected function model();
 
-    protected abstract function rulesStore();
+    abstract protected function rulesStore();
 
-    protected abstract function rulesUpdate();
+    abstract protected function rulesUpdate();
 
     protected function findOrFail($id)
     {

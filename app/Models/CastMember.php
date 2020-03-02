@@ -22,6 +22,7 @@ class CastMember extends Model
         'name',
         'type',
     ];
+
     protected $dates = ['deleted_at'];
 
     protected $casts = [

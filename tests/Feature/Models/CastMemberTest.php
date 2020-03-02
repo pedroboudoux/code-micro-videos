@@ -9,7 +9,7 @@ use Tests\TestCase;
 class CastMemberTest extends TestCase
 {
 
-    use DatabaseMigrations;
+    use DatabaseMigrations, TestValididationsTrait;
 
     public function testList()
     {
@@ -63,10 +63,7 @@ class CastMemberTest extends TestCase
     {
         /** @var CastMember $cast_member */
         $cast_member = factory(CastMember::class)->create();
-        $this->assertTrue(is_string($cast_member->id));
-        $this->assertTrue(
-            preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $cast_member->id) === 1
-        );
+        $this->isValidUuid($cast_member->id);
     }
 
 }

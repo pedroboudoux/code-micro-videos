@@ -9,7 +9,7 @@ use Tests\TestCase;
 class GenreTest extends TestCase
 {
 
-    use DatabaseMigrations;
+    use DatabaseMigrations, TestValididationsTrait;
 
     public function testList()
     {
@@ -72,10 +72,7 @@ class GenreTest extends TestCase
     {
         /** @var Genre $genre */
         $genre = factory(Genre::class)->create();
-        $this->assertTrue(is_string($genre->id));
-        $this->assertTrue(
-            preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $genre->id) === 1
-        );
+        $this->isValidUuid($genre->id);
     }
 
 }
