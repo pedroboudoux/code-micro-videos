@@ -13,7 +13,6 @@ use Tests\Stubs\Controllers\CategoryControllerStub;
 class BasicCrudCControllerTest extends TestCase
 {
     private $controller;
-    private $category;
 
     protected function setUp(): void
     {
