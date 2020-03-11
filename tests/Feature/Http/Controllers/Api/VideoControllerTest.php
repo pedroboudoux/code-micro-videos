@@ -53,6 +53,7 @@ class VideoControllerTest extends TestCase
     {
         $category = factory(Category::class)->create();
         $genre = factory(Genre::class)->create();
+        $genre->categories()->sync($category->id);
 
         $data = [
             [
@@ -68,9 +69,10 @@ class VideoControllerTest extends TestCase
             [
                 'send_data' => $this->sendData + [
                         'categories_id' => [$category->id], 'genres_id' => [$genre->id],
-                        'rating' => Video::RATING_LIST[1]
+                        'rating' => Video::RATING_LIST[1],
+                        'opened' => true
                     ],
-                'test_data' => $this->sendData + ['rating' => Video::RATING_LIST[1]],
+                'test_data' => $this->sendData + ['rating' => Video::RATING_LIST[1], 'opened' => true],
             ],
         ];
 
@@ -163,6 +165,7 @@ class VideoControllerTest extends TestCase
         $controller->shouldReceive('handleRelations')->once()->andThrow(new TestException('gg'));
 
         $request = \Mockery::mock(Request::class);
+        $request->shouldReceive('get')->withAnyArgs()->andReturnNull();
 
         $hasError = false;
         try {
@@ -183,6 +186,7 @@ class VideoControllerTest extends TestCase
         $controller->shouldReceive('handleRelations')->once()->andThrow(new TestException('gg'));
 
         $request = \Mockery::mock(Request::class);
+        $request->shouldReceive('get')->withAnyArgs()->andReturnNull();
 
         try {
             $controller->store($request);
