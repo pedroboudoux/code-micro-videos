@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
+use App\Models\Category;
+use App\Models\Genre;
+
 class GenresTableSeeder extends Seeder
 {
     /**
@@ -11,6 +14,13 @@ class GenresTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Genre::class, 15)->create();
+        $categories = Category::all();
+
+        factory(Genre::class, 100)
+            ->create()
+            ->each(function (Genre $genre) use ($categories) {
+                $categoriesId = $categories->random(rand(1, 5))->pluck('id')->toArray();
+                $genre->categories()->attach($categoriesId);
+            });
     }
 }
