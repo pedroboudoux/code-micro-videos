@@ -57,7 +57,7 @@ class VideoControllerTest extends TestCase
 
         $data = [
             [
-                'send_data' => $this->sendData + ['categories_id' => [$category->id], 'genres_id' => [$genre->id]],
+                'send_data' => $this->sendData + ['categories_id' => [$category->id], 'genres_id' => [$genre->id], 'opened' => false],
                 'test_data' => $this->sendData + ['opened' => false],
             ],
             [
