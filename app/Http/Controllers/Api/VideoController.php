@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Video;
+use App\Rules\GenreHasCategoriesRule;
 use Illuminate\Http\Request;
 
 class VideoController extends BasicCrudRelationedController
@@ -19,12 +20,31 @@ class VideoController extends BasicCrudRelationedController
             'rating' => 'required|in:'.implode(',', Video::RATING_LIST),
             'duration' => 'required|integer',
             'categories_id' => 'required|array|exists:categories,id,deleted_at,NULL',
-            'genres_id' => 'required|array|exists:genres,id,deleted_at,NULL',
+            'genres_id' => ['required', 'array', 'exists:genres,id,deleted_at,NULL'],
         ];
     }
 
+    public function store(Request $request)
+    {
+        $this->addRuleIfGenreHasCategories($request);
+        return parent::store($request);
+    }
 
-    protected function handleRelations($video, Request $request){
+    public function update(Request $request, $id)
+    {
+        $this->addRuleIfGenreHasCategories($request);
+        return parent::update($request, $id);
+    }
+
+    protected function addRuleIfGenreHasCategories(Request $request)
+    {
+        $categoriesId = $request->get('categories_id');
+        $categoriesId = is_array($categoriesId) ? $categoriesId : [];
+        $this->rules['genres_id'][] = new GenreHasCategoriesRule($categoriesId);
+    }
+
+    protected function handleRelations($video, Request $request)
+    {
         /** @var Video $video */
         $video->categories()->sync($request->get('categories_id'));
         $video->genres()->sync($request->get('genres_id'));

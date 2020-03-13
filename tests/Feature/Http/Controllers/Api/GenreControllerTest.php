@@ -32,7 +32,7 @@ class GenreControllerTest extends TestCase
         $response = $this->get(route('api.genres.index'));
 
         $response->assertStatus(200)
-                 ->assertJson([$this->genre->toArray()]);
+            ->assertJson([$this->genre->toArray()]);
     }
 
     public function testShow()
@@ -40,7 +40,7 @@ class GenreControllerTest extends TestCase
         $response = $this->get(route('api.genres.show', ['genre' => $this->genre->id]));
 
         $response->assertStatus(200)
-                 ->assertJson($this->genre->toArray());
+            ->assertJson($this->genre->toArray());
     }
 
     public function testInvalidationData()
@@ -141,6 +141,38 @@ class GenreControllerTest extends TestCase
         $this->assertTrue($hasError);
     }
 
+    public function testSyncCategories()
+    {
+        $categoriesId = factory(Category::class, 3)->create()->pluck('id')->toArray();
+        $sendData = [
+            'name' => 'test',
+            'categories_id' => [$categoriesId[0]]
+        ];
+        $response = $this->json('POST', $this->routeStore(), $sendData);
+        $this->assertDatabaseHas('category_genre', [
+            'category_id' => $categoriesId[0],
+            'genre_id' => $response->json('id')
+        ]);
+
+        $sendData = [
+            'name' => 'test',
+            'categories_id' => [$categoriesId[1], $categoriesId[2]]
+        ];
+        $response = $this->json('PUT', route('api.genres.update', ['genre' => $response->json('id')]), $sendData);
+        $this->assertDatabaseMissing('category_genre', [
+            'category_id' => $categoriesId[0],
+            'genre_id' => $response->json('id')
+        ]);
+        $this->assertDatabaseHas('category_genre', [
+            'category_id' => $categoriesId[1],
+            'genre_id' => $response->json('id')
+        ]);
+        $this->assertDatabaseHas('category_genre', [
+            'category_id' => $categoriesId[2],
+            'genre_id' => $response->json('id')
+        ]);
+    }
+
     public function testDestroy()
     {
         $response = $this->json('DELETE', route('api.genres.destroy', ['genre' => $this->genre->id]));
@@ -152,15 +184,18 @@ class GenreControllerTest extends TestCase
         $this->assertNotNull(Genre::withTrashed()->find($this->genre->id));
     }
 
-    protected function  routeStore(){
+    protected function routeStore()
+    {
         return route('api.genres.store');
     }
 
-    protected function routeUpdate(){
+    protected function routeUpdate()
+    {
         return route('api.genres.update', ['genre' => $this->genre->id]);
     }
 
-    protected function model(){
+    protected function model()
+    {
         return Genre::class;
     }
 
